@@ -37,12 +37,13 @@ long long llroundl(long double a1) { return llround(a1); }
 long lroundl(long double a1) { return lround(a1); }
 long double modfl(long double a1, long double* a2) { double i; double f = modf(a1, &i); *a2 = i; return f; }
 float nexttowardf(float a1, long double a2) { return nextafterf(a1, (float) a2); }
+long double powl(long double x, long double y) { return pow(x, y); }
 long double roundl(long double a1) { return round(a1); }
 void sincosl(long double x, long double* s, long double* c) { sincos(x, (double*) s, (double*) c); }
 
 #endif // __LP64__
 
-// FreeBSD doesn't have an ld128 implementation of tgammal, so both LP32 and LP64 need this.
+// FreeBSD doesn't have an ld128 implementations of tgammal, so both LP32 and LP64 need this.
 long double tgammal(long double x) { return tgamma(x); }
 
 // external/arm-optimized-routines does not provide the long double
@@ -52,4 +53,19 @@ long double expl(long double x) { return exp(x); }
 long double exp2l(long double x) { return exp2(x); }
 long double logl(long double x) { return log(x); }
 long double log2l(long double x) { return log2(x); }
+#endif
+
+// builtins.cpp does not provide the long double wrappers for the
+// routines it implements.
+
+#if defined (__ARM_NEON__)
+long double fmal(long double a1, long double a2, long double a3) { return fma(a1, a2, a3); }
+#endif
+
+#if defined (__AARCH32__)
+long double ceill(long double x) { return ceil(x); }
+long double floorl(long double x) { return floor(x); }
+long double nearbyintl(long double x) { return nearbyint(x); }
+long double rintl(long double x) { return rint(x); }
+long double truncl(long double x) { return trunc(x); }
 #endif
